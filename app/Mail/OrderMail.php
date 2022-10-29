@@ -34,6 +34,6 @@ class OrderMail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Book Store')->view('mails.Order-Mail');
+        return $this->subject('Course Store')->markdown('mails.Order-Mail');
     }
 }

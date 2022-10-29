@@ -3,21 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Course;
 use Illuminate\Http\Request;
 
 class GalleryController extends Controller
 {
     public function index()
     {
-        $books = Book::paginate(12);
-        $title = 'Books Exhibition';
-        return view('project.gallery' , compact('books' , 'title'));
+        $Courses = Course::paginate(12);
+        $title = 'Courses Exhibition';
+        return view('project.gallery' , compact('Courses' , 'title'));
     }
 
     public function search(Request $request)
     {
-        $books = Book::where('title' , 'like' , "%{$request->search}%")->paginate(12);
+        $Courses = Course::where('title' , 'like' , "%{$request->search}%")->paginate(12);
         $title = 'Search results for: ' . $request->search ;
-        return view('project.gallery' , compact('books' , 'title'));
+        return view('project.gallery' , compact('Courses' , 'title'));
     }
 }

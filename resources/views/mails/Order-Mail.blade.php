@@ -1,4 +1,24 @@
-<!DOCTYPE html>
+@component('mail::message')
+# {{ $user['name'] }}
+
+We have successfully received your request.
+
+@component('mail::table')
+| Title Course       | Price         |
+| :--------- | :------------- |
+@foreach ($orders as $order)
+| {{ $order->title }} | {{ $order->price }} |
+@endforeach
+@endcomponent
+
+Thanks,
+
+{{ config('app.name') }}
+@endcomponent
+
+
+
+{{-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,34 +34,18 @@
     <table style="width:600px;">
         <thead>
             <tr>
-                <th>Title Book</th>
+                <th>Title Course</th>
                 <th>Price</th>
-                <th>Number of copies</th>
-                <th>Total Price</th>
             </tr>
         </thead>
         <tbody>
-            @php
-                $subTotal = 0
-            @endphp
             @foreach ($orders as $order)
                 <tr>
                     <td>{{ $order->title }}</td>
                     <td>{{ $order->price }} $</td>
-                    <td>{{ $order->pivot->number_of_copies }}</td>
-                    <td>{{ $order->pivot->number_of_copies * $order->price }} $</td>
-
-                    @php
-                        $subTotal += $order->pivot->number_of_copies * $order->price
-                    @endphp
                 </tr>
             @endforeach
-            <hr>
-            <tr>
-                <td colspan="3" style="border-top:1px solid #ccc;"></td>
-                <td style="font-size:15px;font-weight:bold;border-top:1px solid #ccc;">Total Price : {{ $subTotal }} $</td>
-            </tr>
         </tbody>
     </table>
 </body>
-</html>
+</html> --}}

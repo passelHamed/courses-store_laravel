@@ -1,6 +1,10 @@
 @extends('layouts.main')
 
+<br>
+<br>
+<br>
 @section('content')
+<section>
     <div class="container">
         <div class="row justify-content-center">
             <div id="success" style="display:none;" class="col-md-8 text-center h3 p-4 bg-success text-light rounded">
@@ -12,8 +16,7 @@
                 </div>
             @endif
             <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">shopping cart</div>
+                <div class="card shadow">
                     <div class="card-body">
                         @if ($items->count())
                             <table class="table">
@@ -21,29 +24,20 @@
                                     <tr>
                                         <th scope="col">Title</th>
                                         <th scope="col">Price</th>
-                                        <th scope="col">Quantity</th>
-                                        <th scope="col">total price</th>
                                         <th scope="col">Options</th>
                                     </tr>
                                 </thead>
                                 @php($totalPrice = 0)
                                 @foreach ($items as $item)
-                                    @php($totalPrice += $item->price * $item->pivot->number_of_copies)
+                                    @php($totalPrice += $item->price)
                                     <tbody>
                                         <tr>
                                             <td scope="row">{{ $item->title }}</td>
                                             <td>{{ $item->price }} $</td>
-                                            <td>{{ $item->pivot->number_of_copies }}</td>
-                                            <td>{{ $item->price * $item->pivot->number_of_copies }} $</td>
                                             <td>
-                                                <form action="{{ Route('cart.removeAll' , $item->id) }}" method="post" style="float:left;margin:auto 5px;">
+                                                <form action="{{ Route('cart.remove' , $item->id) }}" method="post" style="float:left;margin:auto 5px;">
                                                 @csrf
-                                                    <button type="submit" class="btn btn-outline-danger btn-sm">Delete All</button>
-                                                </form>
-
-                                                <form action="{{ Route('cart.removeOne' , $item->id) }}" method="post" style="float:left;margin:auto 5px;">
-                                                @csrf
-                                                    <button type="submit" class="btn btn-outline-warning btn-sm">Delete One</button>
+                                                    <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -60,7 +54,7 @@
                             </a>
                         @else
                             <div class="alert alert-info text-center">
-                                There are no books in the cart
+                                There are no Courses in the cart
                             </div>
                         @endif
                     </div>
@@ -68,6 +62,7 @@
             </div>
         </div>
     </div>
+</section>
 @endsection
 
 @section('script')

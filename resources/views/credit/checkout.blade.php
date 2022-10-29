@@ -1,5 +1,10 @@
 @extends('layouts.main')
 
+<br>
+<br>
+<br>
+<br>
+<br>
 @section('style')
     <style>
         .StripeElement {
@@ -38,10 +43,7 @@
                 </div>
             @endif
             <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">
-                        Pay using credit card
-                    </div>
+                <div class="card shadow">
                     <form method="POST" action="/checkout" class="card-form mt-3 mb-3 p-4">
                         @csrf
                         <input type="hidden" name="payment_method" class="payment-method">

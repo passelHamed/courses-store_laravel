@@ -10,15 +10,15 @@ class shopping extends Model
 {
     use HasFactory;
 
-    protected $table = 'book_user';
+    protected $table = 'course_user';
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function book()
+    public function course()
     {
-        return $this->belongsTo(Book::class);
+        return $this->belongsTo(course::class);
     }
 }

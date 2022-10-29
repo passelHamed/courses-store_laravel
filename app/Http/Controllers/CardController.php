@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Book;
+use App\Models\Course;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 
@@ -18,43 +18,26 @@ class CardController extends Controller
 
     public function addToCart(Request $request)
     {
-        $book = Book::find($request->id);
-        if (auth()->user()->booksInCart->contains($book)) {
-            $newQuantity = $request->quantity + auth()->user()->booksInCart()->where('book_id' , $book->id)->first()->pivot->number_of_copies;
-            if ($newQuantity > $book->number_of_copies) {
-                session()->flash('flash_warning', 'This book has not been added, you have exceeded the number of books we have, the maximum number of books you can book from this book is ' . ($book->number_of_copies - auth()->user()->booksInCart()->where('book_id',$book->id)->first()->pivot->number_of_copies) . 'book');
-                return redirect()->back();
-            } else{
-                auth()->user()->booksInCart()->updateExistingPivot($book->id , ['number_of_copies'=>$newQuantity]);
-            }
+        $Course = Course::find($request->idCourse);
+        if (auth()->user()->coursesInCart->contains($Course)) {
+            session()->flash('flash_warning', 'You have already purchased this course');
+            return redirect()->back();
         } else{
-            auth()->user()->booksInCart()->attach($request->id , ['number_of_copies'=>$request->quantity]);
+            auth()->user()->coursesInCart()->attach($Course);
         }
 
-        $num_of_product = auth()->user()->booksInCart()->count();
-        return response()->json(['num_of_product' => $num_of_product]);
+        return redirect('/cart');
     }
 
     public function viewCart()
     {
-        $items = auth()->user()->booksInCart;
+        $items = auth()->user()->coursesInCart;
         return view('project.indexCart' , compact('items'));
     }
 
-    public function removeOne(Book $book)
+    public function remove(Course $Course)
     {
-        $oldQuantity = auth()->user()->booksInCart()->where('book_id',$book->id)->first()->pivot->number_of_copies;
-        if ($oldQuantity > 1) {
-            auth()->user()->booksInCart()->updateExistingPivot($book->id , ['number_of_copies'=> --$oldQuantity]);
-        }else {
-            auth()->user()->booksInCart()->detach($book->id);
-        }
-        return redirect()->back();
-    }
-
-    public function removeAll(Book $book)
-    {
-        auth()->user()->booksInCart()->detach($book->id);
+        auth()->user()->coursesInCart()->detach($Course->id);
         return redirect()->back();
     }
 }

@@ -77,29 +77,34 @@ class User extends Authenticatable
         return $this->hasMany(Rating::class);
     }
 
-    public function rated(Book $book)
+    public function rated(Course $course)
     {
-        return $this->ratings->where('book_id',$book->id)->isNotEmpty();
+        return $this->ratings->where('course_id',$course->id)->isNotEmpty();
     }
 
-    public function BookRating(Book $book)
+    public function courseRating(Course $course)
     {
-        return $this->rated($book) ? $this->ratings->where('book_id' , $book->id)->first() : Null;
+        return $this->rated($course) ? $this->ratings->where('course_id' , $course->id)->first() : Null;
     }
 
-    public function booksInCart()
+    public function coursesInCart()
     {
-        return $this->belongsToMany(Book::class)->withPivot(['number_of_copies' , 'price' , 'bought'])->wherePivot('bought',FALSE);
+        return $this->belongsToMany(Course::class)->withPivot(['price' , 'bought'])->wherePivot('bought',FALSE);
     }
 
     public function ratedpurches()
     {
-        return $this->belongsToMany(Book::class)->withPivot(['bought'])->wherePivot('bought' , true);
+        return $this->belongsToMany(Course::class)->withPivot(['bought'])->wherePivot('bought' , true);
+    }
+
+    public function coursesPurches()
+    {
+        return $this->belongsToMany(Course::class)->withPivot(['bought'])->wherePivot('bought' , true);
     }
 
     public function PurchedProduct()
     {
-        return $this->belongsToMany(Book::class)->withPivot(['number_of_copies' , 'bought' , 'price' , 'created_at'])->orderBy('pivot_created_at' , 'desc')->wherePivot('bought' , true);
+        return $this->belongsToMany(Course::class)->withPivot(['bought' , 'price' , 'created_at'])->orderBy('pivot_created_at' , 'desc')->wherePivot('bought' , true);
     }
 
 }

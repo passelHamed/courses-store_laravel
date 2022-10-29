@@ -4,6 +4,9 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 
+use App\Models\Course;
+use App\Models\User;
+use App\Models\video;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -33,6 +36,10 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('update-users' , function($user){
             return $user->isSuperAdmin();
+        });
+
+        Gate::define('update-video' , function($user){
+            return $user->coursesPurches()->first();
         });
     }
 }

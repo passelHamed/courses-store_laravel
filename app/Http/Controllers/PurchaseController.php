@@ -33,11 +33,11 @@ class PurchaseController extends Controller
     public function createPayment(Request $request)
     {
         $data = json_decode($request->getContent() , true);
-        $books = User::find($data['userId'])->booksInCart;
+        $courses = User::find($data['userId'])->coursesInCart;
         $total = 0;
 
-        foreach ($books as $book) {
-            $total += $book->price * $book->pivot->number_of_copies;
+        foreach ($courses as $course) {
+            $total += $course->price;
         }
 
         $order = $this->provider->createOrder([
@@ -65,14 +65,14 @@ class PurchaseController extends Controller
 
         if ($result['status' === 'COMPLETED']) {
             $user = User::find($data['userId']);
-            $books = $user->booksInCart;
-            $this->sendOrderConfirmationMail($books , auth()->user());
+            $courses = $user->coursesInCart;
+            $this->sendOrderConfirmationMail($courses , auth()->user());
 
-            foreach ($books as $book) {
-                $bookPrice = $book->price;
+            foreach ($courses as $course) {
+                $coursePrice = $course->price;
                 $purchaseTime = Carbon::now();
-                $user->booksInCart()->updateExistingPivot($book->id, ['bought' => TRUE , 'price' => $bookPrice , 'created_at' => $purchaseTime]);
-                $book->save();
+                $user->coursesInCart()->updateExistingPivot($course->id, ['bought' => TRUE , 'price' => $coursePrice , 'created_at' => $purchaseTime]);
+                $course->save();
             }
         }
         return response()->json($result);
@@ -87,10 +87,10 @@ class PurchaseController extends Controller
     {
         $intent = auth()->user()->createSetupIntent();
         $userId = auth()->user()->id;
-        $books = User::find($userId)->booksInCart;
+        $courses = User::find($userId)->coursesInCart;
         $total = 0;
-        foreach ($books as $book) {
-            $total += $book->price * $book->pivot->number_of_copies; 
+        foreach ($courses as $course) {
+            $total += $course->price; 
         }
         return view('credit.checkout' , compact('total' , 'intent'));
     }
@@ -102,10 +102,10 @@ class PurchaseController extends Controller
         $paymentMethod = $request->input('payment_method');
 
         $userId = auth()->user()->id;
-        $books = User::find($userId)->booksInCart;
+        $courses = User::find($userId)->coursesInCart;
         $total = 0;
-        foreach ($books as $book) {
-            $total += $book->price * $book->pivot->number_of_copies; 
+        foreach ($courses as $course) {
+            $total += $course->price; 
         }
 
         try {
@@ -116,13 +116,13 @@ class PurchaseController extends Controller
             return back()->with('warning','An error occurred while purchasing the product, please check the card information' , $exception->getMessage());
         }
 
-        $this->sendOrderConfirmationMail($books , auth()->user());
+        $this->sendOrderConfirmationMail($courses , auth()->user());
 
-        foreach ($books as $book) {
-            $bookPrice = $book->price;
+        foreach ($courses as $course) {
+            $coursesPrice = $course->price;
             $purchaseTime = Carbon::now();
-            $user->booksInCart()->updateExistingPivot($book->id, ['bought' => TRUE , 'price' => $bookPrice , 'created_at' => $purchaseTime]);
-            $book->save();
+            $user->coursesInCart()->updateExistingPivot($course->id, ['bought' => TRUE , 'price' => $coursesPrice , 'created_at' => $purchaseTime]);
+            $course->save();
         }
         return redirect('/cart')->with('message','Product purchased successfully');
     }
@@ -138,14 +138,14 @@ class PurchaseController extends Controller
     public function MyProduct()
     {
         $userId = auth()->user()->id;
-        $myBooks = User::find($userId)->PurchedProduct;
-        return view('project.myPurchases' , compact('myBooks'));
+        $myCourses = User::find($userId)->PurchedProduct;
+        return view('project.myPurchases' , compact('myCourses'));
     }
 
     public function adminProduct()
     {
-        $allBooks = shopping::with(['user' , 'book'])->where('bought' , true)->get();
-        return view('admin.indexPurchases' , compact('allBooks'));
+        $allCourses = shopping::with(['user' , 'Course'])->where('bought' , true)->get();
+        return view('admin.indexPurchases' , compact('allCourses'));
     }
 
 }

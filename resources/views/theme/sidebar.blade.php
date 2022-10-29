@@ -26,33 +26,17 @@
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item {{ request()->is('admin/books*') ? 'active' : '' }}">
-            <a class="nav-link" href="/admin/books">
+            <a class="nav-link" href="/admin/courses">
                 <i class="fas fa-book-open"></i>
-                <span>books</span>
+                <span>courses</span>
             </a>
         </li>
 
         <!-- Nav Item - Utilities Collapse Menu -->
         <li class="nav-item {{ request()->is('admin/categories*') ? 'active' : '' }}">
-            <a class="nav-link" href="/admin/categories">
+            <a class="nav-link" href="/admin/explainers">
                 <i class="fas fa-folder"></i>
-                <span>categories</span>
-            </a>
-        </li>
-
-        <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item {{ request()->is('admin/authors*') ? 'active' : '' }}">
-            <a class="nav-link" href="/admin/authors">
-                <i class="fas fa-pen-fancy"></i>
-                <span>Authors</span>
-            </a>
-        </li>
-
-        <!-- Nav Item - Charts -->
-        <li class="nav-item {{ request()->is('admin/publishers*') ? 'active' : '' }}">
-            <a class="nav-link" href="/admin/publishers">
-                <i class="fas fa-table"></i>
-                <span>publishers</span>
+                <span>Explainers</span>
             </a>
         </li>
 

@@ -1,14 +1,13 @@
 <?php
 
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\AuthorsController;
-use App\Http\Controllers\BooksController;
-use App\Http\Controllers\publishersController;
-use App\Http\Controllers\categoriesController;
+use App\Http\Controllers\CoursesController;
+use App\Http\Controllers\ExplainersController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\VideosController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,9 +39,7 @@ Route::middleware([
 
 // SEARCH
 
-Route::get('/categories/search' , [categoriesController::class , 'search']);
-Route::get('/publishers/search' , [publishersController::class , 'search']);
-Route::get('/authors/search' , [AuthorsController::class , 'search']);
+Route::get('/explainers/search' , [ExplainersController::class , 'search']);
 
 
 // GALLERY
@@ -51,38 +48,29 @@ Route::get('/' , [GalleryController::class , 'index'])->name('gallery.index');
 Route::get('/search' , [GalleryController::class , 'search'])->name('gallery.search');
 
 
-// BOOK
+// courses
 
-Route::get('/book/{book}' , [BooksController::class , 'showBook']);
-Route::post('book/{book}/rate' , [BooksController::class , 'rate']);
-
-
-// CATEGORIES
-
-Route::get('/categories' , [categoriesController::class, 'indexCategories']);
-Route::get('/categories/{category}' , [categoriesController::class, 'showCategories']);
+Route::get('/courses/{course}' , [CoursesController::class , 'ShowCourse']);
+Route::post('courses/{course}/rate' , [CoursesController::class , 'rate']);
 
 
-// PUBLISHERS
+// explainers
 
-Route::get('/publishers' , [publishersController::class, 'indexPublishers']);
-Route::get('/publishers/{publisher}' , [publishersController::class, 'showPublishers']);
-
-
-// Authors
-
-Route::get('/authors' , [AuthorsController::class, 'indexAuthors']);
-Route::get('/authors/{author}' , [AuthorsController::class, 'showAuthors']);
+Route::get('/explainers' , [ExplainersController::class, 'indexExplainers']);
+Route::get('/explainers/{explainer}' , [ExplainersController::class, 'showExplainers']);
 
 
 // Admin
 
 Route::prefix('/admin')->middleware('can:update-books')->group(function(){
     Route::get('/' , [AdminController::class , 'index']);
-    Route::resource('/books' , BooksController::class);
-    Route::resource('/categories' , categoriesController::class);
-    Route::resource('/publishers' , publishersController::class);
-    Route::resource('/authors' , AuthorsController::class);
+    Route::resource('/courses' , CoursesController::class);
+    // Route::resource('/courses/{course}/videos' , VideosController::class);
+    Route::get('/courses/{course}/videos' , [VideosController::class,'index']);
+    Route::get('/courses/{course}/videos/create' , [VideosController::class,'create']);
+    Route::post('/courses/{course}/videos' , [VideosController::class,'store']);
+    Route::get('/courses/videos/{video}' , [VideosController::class,'show']);
+    Route::resource('/explainers' , ExplainersController::class);
     Route::resource('/users' , UsersController::class)->middleware('can:update-users');
     Route::get('/purchases' , [PurchaseController::class,'adminProduct'])->middleware('can:update-users');
 });
@@ -90,17 +78,22 @@ Route::prefix('/admin')->middleware('can:update-books')->group(function(){
 
 // Card_Bought
 
-Route::POST('/cart',[CardController::class,'addToCart'])->name('cart.add');
+Route::post('/cart',[CardController::class,'addToCart'])->name('cart.add');
 Route::get('/cart',[CardController::class,'viewCart']);
-Route::post('/removeOne/{book}' ,[CardController::class , 'removeOne'])->name('cart.removeOne');
-Route::post('/removeAll/{book}' ,[CardController::class , 'removeAll'])->name('cart.removeAll');
+Route::post('/remove/{Course}' ,[CardController::class , 'remove'])->name('cart.remove');
 
 
 // credit cart
 
-Route::get('/checkout' , [PurchaseController::class , 'creditCheckout']);
+Route::get('/checkout' , [PurchaseController::class , 'creditCheckout'])->middleware('auth');
 Route::post('/checkout' , [PurchaseController::class , 'purchase']);
 
 // my purchases 
 
-Route::get('/purchases' , [PurchaseController::class , 'MyProduct']);
+Route::get('/purchases' , [PurchaseController::class , 'MyProduct'])->middleware('auth');
+
+
+// videos
+
+Route::get('/courses/{course}/videos',[VideosController::class , 'indexVideos'])->middleware('can:update-video');
+Route::get('/courses/videos/{video}',[VideosController::class , 'showVideos'])->middleware('can:update-video');

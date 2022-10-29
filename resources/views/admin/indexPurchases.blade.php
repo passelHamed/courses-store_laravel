@@ -13,30 +13,23 @@ All purchases
 <div class="row">
     <div class="col-md-12">
         <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Data Website</h6>
-            </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <table id="books-table" class="table table-bordered" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>Buyer</th>
-                                <th>book</th>
+                                <th>course</th>
                                 <th>price</th>
-                                <th>number of copies</th>
-                                <th>total price</th>
                                 <th>date of purchase</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($allBooks as $product)
+                            @foreach ($allCourses as $product)
                                 <tr>
                                     <td>{{ $product->user::find($product->user_id)->name }}</td>
-                                    <td><a href="/admin/book/{{ $product->book_id }}">{{ $product->book::find($product->book_id)->title }}</a></td>
+                                    <td><a href="/admin/courses/{{ $product->course_id }}">{{ $product->course::find($product->course_id)->title }}</a></td>
                                     <td>{{ $product->price }} $</td>
-                                    <td>{{ $product->number_of_copies }}</td>
-                                    <td>{{ $product->number_of_copies * $product->price }} $</td>
                                     <td>{{ $product->created_at->diffForHumans() }}</td>
                                 </tr>
                             @endforeach

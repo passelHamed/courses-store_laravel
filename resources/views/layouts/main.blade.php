@@ -11,12 +11,25 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo&family=Norican&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <title>Book Store</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <link href="{{ asset('theme/theme/assets/img/favicon.png') }}" rel="icon">
+    <link href="{{ asset('theme/theme/assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <link href="{{ asset('theme/theme/assets/vendor/animate.css/animate.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('theme/theme/assets/vendor/aos/aos.css') }}" rel="stylesheet">
+    <link href="{{ asset('theme/theme/assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('theme/theme/assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+    <link href="{{ asset('theme/theme/assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('theme/theme/assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
+    <link href="{{ asset('theme/theme/assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('theme/theme/assets/css/style.css') }}" rel="stylesheet">
+    <title>Course Store</title>
 
     <style>
         body{
             font-family: 'Cairo', sans-serif;
-            background-color: #f0f0f0 ; 
+            background-color: #ffffff ; 
         }
         .score{
             display: block;
@@ -76,47 +89,43 @@
             color: #FFCA00;
         }
         .bg-cart{
-            background-color: #ffc107;
+            background-color: rgba(144, 10, 10, 0.776);
             color: #fff;
         }
+        .bg-view{
+            background-color: #5fcf80;
+            color: #fff;
+            text-decoration-line: none;
+            
+        }
+
+        /* #footer{
+            background-color: red;
+        } */
     </style>
     @yield('style')
 </head>
 <body>
     <div>
-        <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <nav class="shadow navbar navbar-expand-lg navbar-light bg-white fixed-top">
             <div class="container">
-                <a class="navbar-brand" href="/">Book Store</a>
+                <a class="navbar-brand" href="/">Courses Store</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mx-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="/categories">
-                                Categories
+                            <a class="nav-link" href="/explainers">
+                                Explainers
                                 <i class="fas fa-list"></i>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="/publishers">
-                                Publishers
-                                <i class="fas fa-table"></i>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="/authors">
-                                Authors
-                                <i class="fa-solid fa-pen"></i>
                             </a>
                         </li>
 
                         @auth                            
                             <li class="nav-item">
                                 <a class="nav-link" href="/purchases">
-                                    my purchases
+                                    my Courses
                                     <i class="fas fa-basket-shopping"></i>
                                 </a>
                             </li>
@@ -124,8 +133,8 @@
                         @auth
                             <li class="nav-item">
                                 <a class="nav-link" href="/cart">
-                                    @if (Auth::user()->booksInCart()->count() > 0)
-                                        <span class="badge bg-secondary">{{ Auth::user()->booksInCart()->count() }}</span>
+                                    @if (Auth::user()->coursesInCart()->count() > 0)
+                                        <span class="badge bg-secondary">{{ Auth::user()->coursesInCart()->count() }}</span>
                                     @else
                                         <span class="badge bg-secondary">0</span>
                                     @endif
@@ -229,7 +238,7 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="">
             @yield('content')
         </main>
     </div>
@@ -239,6 +248,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="{{ asset('theme/theme/assets/vendor/purecounter/purecounter_vanilla.js') }}"></script>
+    <script src="{{ asset('theme/theme/assets/vendor/aos/aos.js') }}"></script>
+    {{-- <script src="{{ asset('theme/theme/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script> --}}
+    <script src="{{ asset('theme/theme/assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
+    <script src="{{ asset('theme/theme/assets/vendor/php-email-form/validate.js') }}"></script>
+    <script src="{{ asset('theme/theme/assets/js/main.js') }}"></script>
     @yield('script')
 </body>
 </html>
