@@ -14,7 +14,7 @@
             <div class="card shadow">
                 <div class="card-body">
                     <table class="table">
-                        @auth
+                        {{-- @auth --}}
                             @if ($CourseFind)
                                 <div class="text-right mt-3">
                                     <a href="/courses/{{ $Course->id }}/videos" type="submit" class="add-cart btn bg-view mb-4">view videos</a>
@@ -28,7 +28,7 @@
                                     </form>
                                 </div>
                             @endif
-                        @endauth
+                        {{-- @endauth --}}
                         <tr>
                             <th>Title</th>
                             <td class="lead"><b>{{ $Course->title }}</b></td>
